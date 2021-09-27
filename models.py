@@ -231,8 +231,3 @@ class OrderLines:
             rows = self._transform(rows)
             response["output_rows"] = self._load(rows)
         return response
-
-
-x = OrderLines("2021-09-01", "2021-09-03")
-y = x.run()
-y
