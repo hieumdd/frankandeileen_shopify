@@ -9,7 +9,7 @@ from main import main
     ("start", "end"),
     [
         (None, None),
-        ("2021-09-01", "2021-09-26"),
+        ("2021-09-01", "2021-09-02"),
     ],
     ids=["auto", "manual"],
 )

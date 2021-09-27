@@ -13,7 +13,7 @@ API_VER = "2021-07"
 SHOP_URL = "frankandeileen.myshopify.com"
 
 
-class OrderLines:
+class Orders:
     keys = {
         "p_key": [
             "id",
@@ -22,10 +22,40 @@ class OrderLines:
     }
     schema = [
         {"name": "id", "type": "INTEGER"},
+        {"name": "app_id", "type": "INTEGER"},
+        {"name": "currency", "type": "STRING"},
         {"name": "order_number", "type": "INTEGER"},
+        {"name": "processed_at", "type": "TIMESTAMP"},
+        {"name": "closed_at", "type": "TIMESTAMP"},
         {"name": "created_at", "type": "TIMESTAMP"},
         {"name": "updated_at", "type": "TIMESTAMP"},
+        {"name": "source_name", "type": "STRING"},
         {"name": "email", "type": "STRING"},
+        {"name": "total_discounts", "type": "NUMERIC"},
+        {"name": "total_price", "type": "NUMERIC"},
+        {"name": "total_tax", "type": "NUMERIC"},
+        {
+            "name": "total_shipping_price_set",
+            "type": "RECORD",
+            "fields": [
+                {
+                    "name": "shop_money",
+                    "type": "RECORD",
+                    "fields": [
+                        {"name": "amount", "type": "NUMERIC"},
+                        {"name": "currency_code", "type": "STRING"},
+                    ],
+                },
+                {
+                    "name": "presentment_money",
+                    "type": "RECORD",
+                    "fields": [
+                        {"name": "amount", "type": "NUMERIC"},
+                        {"name": "currency_code", "type": "STRING"},
+                    ],
+                },
+            ],
+        },
         {
             "name": "line_items",
             "type": "RECORD",
@@ -112,15 +142,25 @@ class OrderLines:
             {
                 "limit": 250,
                 "status": "any",
-                "updated_at_min": self.start.isoformat(timespec='seconds'),
-                "updated_at_max": self.end.isoformat(timespec='seconds'),
+                "updated_at_min": self.start.isoformat(timespec="seconds"),
+                "updated_at_max": self.end.isoformat(timespec="seconds"),
                 "fields": ",".join(
                     [
                         "id",
-                        "order_number",
+                        "app_id",
+                        "currency",
                         "email",
-                        "created_at",
+                        "source_name",
+                        "sub_total_price",
+                        "total_tax",
+                        "total_shipping_price_set",
+                        "total_discounts",
+                        "total_price",
+                        "order_number",
                         "line_items",
+                        "processed_at",
+                        "closed_at",
+                        "created_at",
                         "updated_at",
                     ]
                 ),
@@ -149,13 +189,23 @@ class OrderLines:
             return res["orders"] + next_
 
     def _transform(self, rows):
+        rows
         return [
             {
                 "id": row["id"],
+                "app_id": row["app_id"],
+                "currency": row["currency"],
+                "source_name": row["source_name"],
                 "order_number": row["order_number"],
+                "processed_at": row["processed_at"],
+                "closed_at": row["closed_at"],
                 "created_at": row["created_at"],
                 "updated_at": row["updated_at"],
                 "email": row["email"],
+                "total_discounts": row["total_discounts"],
+                "total_price": row["total_price"],
+                "total_tax": row["total_tax"],
+                "total_shipping_price_set": row["total_shipping_price_set"],
                 "line_items": [
                     {
                         "id": line_item["id"],
