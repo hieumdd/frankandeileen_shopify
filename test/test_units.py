@@ -11,8 +11,9 @@ from main import main
         (None, None),
         ("2021-09-01", "2021-09-26"),
     ],
+    ids=["auto", "manual"],
 )
-def test_manual(start, end):
+def test_pipelines(start, end):
     data = {
         "start": start,
         "end": end,
