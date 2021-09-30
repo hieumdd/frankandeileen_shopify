@@ -9,10 +9,11 @@ from main import main
     ("start", "end"),
     [
         (None, None),
-        ("2021-09-01", "2021-09-02"),
+        ("2021-01-01", "2021-03-01"),
     ],
     ids=["auto", "manual"],
 )
+@pytest.mark.timeout(0)
 def test_pipelines(start, end):
     data = {
         "start": start,

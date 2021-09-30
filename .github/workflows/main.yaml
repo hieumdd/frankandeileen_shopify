@@ -31,7 +31,6 @@ jobs:
           --runtime=python39
           --trigger-http
           --service-account=${{ secrets.GCP_SA }}
-          --set-env-vars='API_KEY=${{ secrets.API_KEY }},
-          API_SECRET=${{ secrets.API_SECRET }}'
+          --set-env-vars=API_KEY=${{ secrets.API_KEY }},API_SECRET=${{ secrets.API_SECRET }}
 
   
